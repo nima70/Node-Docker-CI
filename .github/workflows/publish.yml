@@ -1,0 +1,62 @@
+name: Publish to npm
+
+on:
+  push:
+    branches:
+      - master # or any branch you want to trigger the publish
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        continue-on-error: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+          registry-url: "https://registry.npmjs.org"
+        continue-on-error: false
+
+      - name: Install Docker using Docker's official script
+        run: |
+          curl -fsSL https://get.docker.com -o get-docker.sh
+          sudo sh get-docker.sh
+        continue-on-error: false
+
+      - name: Install Docker Compose
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/download/v2.3.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+          docker-compose --version
+        continue-on-error: false
+
+      - name: Install dependencies
+        run: npm install
+        continue-on-error: false
+
+      # Placeholder for starting application-specific services, e.g., Keycloak
+      # Uncomment and modify the following steps based on the specific needs of your application.
+
+      - name: Start application-specific services using Docker Compose
+        run: docker-compose up -d
+        continue-on-error: false
+
+
+      - name: Run tests
+        run: npm test
+        continue-on-error: false
+
+      - name: Build the project
+        run: npm run build
+        continue-on-error: false
+
+      - name: Publish to npm
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        continue-on-error: false
+
