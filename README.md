@@ -28,7 +28,7 @@ This template leverages Docker Compose to spin up services required for testing 
 
    ```bash
    git clone https://github.com/nima70/Node-Docker-CI.git
-   cd docker-compose-github-action
+   cd Node-Docker-CI
    ```
 2. **Modify the docker-compose.yml File:**
 
