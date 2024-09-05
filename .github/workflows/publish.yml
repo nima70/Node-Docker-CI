@@ -38,8 +38,6 @@ jobs:
         run: npm install
         continue-on-error: false
 
-      # Placeholder for starting application-specific services, e.g., Keycloak
-      # Uncomment and modify the following steps based on the specific needs of your application.
 
       - name: Start application-specific services using Docker Compose
         run: docker-compose up -d
